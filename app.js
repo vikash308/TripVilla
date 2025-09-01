@@ -1,18 +1,19 @@
 const path = require('path');
-
-// External Module
 require('dotenv').config();
+
+// External Modules
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const { default: mongoose } = require('mongoose');
 const multer = require('multer');
+const { cloudinary, storage } = require('./cloudConfig'); // ✅ New for Cloudinary
 const DB_PATH = process.env.DB_PATH;
 
-//Local Module
-const storeRouter = require("./routes/storeRouter")
-const hostRouter = require("./routes/hostRouter")
-const authRouter = require("./routes/authRouter")
+// Local Modules
+const storeRouter = require("./routes/storeRouter");
+const hostRouter = require("./routes/hostRouter");
+const authRouter = require("./routes/authRouter");
 const rootDir = require("./utils/pathUtil");
 const errorsController = require("./controllers/errors");
 
@@ -21,47 +22,22 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+// MongoDB Session Store
 const store = new MongoDBStore({
   uri: DB_PATH,
   collection: 'sessions'
 });
 
-const randomString = (length) => {
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, randomString(10) + '-' + file.originalname);
-  }
-});
-
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-}
-
-const multerOptions = {
-  storage, fileFilter
-};
+// ✅ Remove local randomString and diskStorage logic
+// ✅ Use Cloudinary storage instead
+const upload = multer({ storage }); // Using Cloudinary Storage
 
 app.use(express.urlencoded());
-app.use(multer(multerOptions).single('photo'));
-app.use(express.static(path.join(rootDir, 'public')))
-app.use("/uploads", express.static(path.join(rootDir, 'uploads')))
-app.use("/host/uploads", express.static(path.join(rootDir, 'uploads')))
-app.use("/homes/uploads", express.static(path.join(rootDir, 'uploads')))
+app.use(upload.single('photo')); // ✅ Handles image upload to Cloudinary
+
+app.use(express.static(path.join(rootDir, 'public')));
+
+// ✅ Remove local "/uploads" serving because we are using Cloudinary now
 
 app.use(session({
   secret: "KnowledgeGate AI with Complete Coding",
@@ -71,12 +47,13 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-  req.isLoggedIn = req.session.isLoggedIn
+  req.isLoggedIn = req.session.isLoggedIn;
   next();
-})
+});
 
-app.use(authRouter)
+app.use(authRouter);
 app.use(storeRouter);
+
 app.use("/host", (req, res, next) => {
   if (req.isLoggedIn) {
     next();
