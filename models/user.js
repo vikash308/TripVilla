@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema({
   favourites: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Home'
+  }],
+  myHome:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Home'
   }]
 });
 
