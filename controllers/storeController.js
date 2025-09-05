@@ -8,7 +8,7 @@ exports.getIndex = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "airbnb Home",
       currentPage: "index",
-      isLoggedIn: req.isLoggedIn, 
+      isLoggedIn: req.isLoggedIn,
       user: req.session.user,
     });
   });
@@ -20,7 +20,7 @@ exports.getHomes = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "Homes List",
       currentPage: "Home",
-      isLoggedIn: req.isLoggedIn, 
+      isLoggedIn: req.isLoggedIn,
       user: req.session.user,
     });
   });
@@ -30,7 +30,7 @@ exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "My Bookings",
     currentPage: "bookings",
-    isLoggedIn: req.isLoggedIn, 
+    isLoggedIn: req.isLoggedIn,
     user: req.session.user,
   });
 };
@@ -42,7 +42,7 @@ exports.getFavouriteList = async (req, res, next) => {
     favouriteHomes: user.favourites,
     pageTitle: "My Favourites",
     currentPage: "favourites",
-    isLoggedIn: req.isLoggedIn, 
+    isLoggedIn: req.isLoggedIn,
     user: req.session.user,
   });
 };
@@ -80,9 +80,31 @@ exports.getHomeDetails = (req, res, next) => {
         home: home,
         pageTitle: "Home Detail",
         currentPage: "Home",
-        isLoggedIn: req.isLoggedIn, 
+        isLoggedIn: req.isLoggedIn,
         user: req.session.user,
       });
     }
   });
+};
+
+
+exports.describeHome = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const home = await Home.findById(id);
+
+    if (!home) {
+      return res.status(404).send("Home not found");
+    }
+
+    res.render("store/describeHome", {
+       home,
+       pageTitle:"Describe Home",
+       currentPage:"home",
+       isLoggedIn:req.isLoggedIn,
+       user:req.session.user
+     });
+  } catch (error) {
+    next(error);
+  }
 };

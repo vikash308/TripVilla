@@ -1,0 +1,50 @@
+<%- include('../partials/head') %>
+</head>
+<body class="bg-gray-100">
+  <%- include('../partials/nav') %>
+  
+  <main class="container mx-auto my-7 max-w-3xl">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      
+      <!-- Image -->
+      <img src="<%= home.photo %>" alt="Image of <%= home.houseName %>" class="w-full h-96 object-cover">
+      
+      <!-- Content -->
+      <div class="p-6">
+        <!-- Title & Location -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= home.houseName %></h1>
+        <p class="text-gray-600 flex items-center mb-4">
+          <i class="fas fa-map-marker-alt text-red-500 mr-2"></i> <%= home.location %>
+        </p>
+
+        <!-- Price & Rating -->
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-2xl font-bold text-red-500">₹<%= home.price.toLocaleString('en-IN') %> / night</span>
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-400 mr-1">
+              <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-gray-700 text-lg"><%= home.rating %></span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold mb-2">Description</h2>
+          <p class="text-gray-700 leading-relaxed"><%= home.description %></p>
+        </div>
+
+       
+
+        <!-- Booking Button -->
+            
+    <button class="w-full bg-green-500 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-600 transition duration-300">
+  Book Now
+</button>
+
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>

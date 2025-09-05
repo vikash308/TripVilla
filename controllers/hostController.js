@@ -52,7 +52,7 @@ exports.getHostHomes = async (req, res, next) => {
 exports.postAddHome = async (req, res, next) => {
   const { houseName, price, location, rating, description } = req.body;
   console.log(houseName, price, location, rating, description);
-  console.log(req.file);
+  console.log(houseName,price,location);
 
   if (!req.file) {
     return res.status(422).send("No image provided");
