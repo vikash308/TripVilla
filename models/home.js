@@ -19,6 +19,18 @@ const homeSchema = mongoose.Schema({
   },
   photo: String,
   description: String,
+  owner: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User' 
+  },
+  review:[
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+      name:String,
+      rating:Number,
+      comment:String
+    },{Timestamp:true}
+  ]
 });
 
 module.exports = mongoose.model("Home", homeSchema);

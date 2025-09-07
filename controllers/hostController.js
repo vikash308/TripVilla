@@ -60,6 +60,7 @@ exports.postAddHome = async (req, res, next) => {
 
   const photo = req.file.path;
 
+  
   const home = new Home({
     houseName,
     price,
@@ -67,6 +68,7 @@ exports.postAddHome = async (req, res, next) => {
     rating,
     photo,
     description,
+    owner:req.session.user._id
   });
   await home.save()
     console.log("Home Saved successfully");

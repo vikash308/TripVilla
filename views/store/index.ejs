@@ -23,7 +23,20 @@
                   <span class="text-gray-700"><%= home.rating %></span>
                 </div>
               </div>
-              <button class="bg-green-300 p-2">Book</button>
+             <div class="flex justify-between items-center">
+           <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-8 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out">
+  Book
+</button>
+           <h2 class="text-lg font-semibold flex items-center gap-3">
+  <span class="text-gray-800">Reviews</span>
+  <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
+    <%= home.reviews ? home.reviews.length : 0 %>
+  </span>
+</h2>
+
+
+             </div>
+
             </div>
           </div>
           </a>

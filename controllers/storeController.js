@@ -1,6 +1,7 @@
 const Home = require("../models/home");
 const User = require("../models/user");
 
+
 exports.getIndex = (req, res, next) => {
   console.log("Session Value: ", req.session);
   Home.find().then((registeredHomes) => {
@@ -96,15 +97,36 @@ exports.describeHome = async (req, res, next) => {
     if (!home) {
       return res.status(404).send("Home not found");
     }
+    // ✅ Fetch owner details using owner ID
+    const owner = await User.findById(home.owner);
+    const name = owner ? `${owner.firstName} ${owner.lastName}` : "Unknown Host";
 
     res.render("store/describeHome", {
-       home,
-       pageTitle:"Describe Home",
-       currentPage:"home",
-       isLoggedIn:req.isLoggedIn,
-       user:req.session.user
-     });
+      home,
+      pageTitle: "Describe Home",
+      currentPage: "home",
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
+      name
+    });
   } catch (error) {
     next(error);
   }
 };
+
+
+
+exports.review = async (req,res,next)=>{
+  let {id} = req.params;
+  let {name, rating, comment}= req.body;
+
+  let userName = await req.session.user.firstName;
+  let Name = userName +" "+req.session.user.lastName;
+
+  let user = req.session.user._id
+
+  const home = await Home.findById(id);
+  home.review.push({user, name:Name, rating,  comment})  
+  await home.save();
+  res.redirect(`/describe/${id}`)
+}
