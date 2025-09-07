@@ -1,16 +1,15 @@
 const path = require('path');
 require('dotenv').config();
 
-// External Modules
 const express = require('express');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const { default: mongoose } = require('mongoose');
 const multer = require('multer');
-const { cloudinary, storage } = require('./cloudConfig'); // ✅ New for Cloudinary
+const { cloudinary, storage } = require('./cloudConfig'); 
 const DB_PATH = process.env.DB_PATH;
 
-// Local Modules
+
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
 const authRouter = require("./routes/authRouter");
@@ -22,25 +21,24 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-// MongoDB Session Store
+
 const store = new MongoDBStore({
   uri: DB_PATH,
   collection: 'sessions'
 });
 
-// ✅ Remove local randomString and diskStorage logic
-// ✅ Use Cloudinary storage instead
-const upload = multer({ storage }); // Using Cloudinary Storage
+
+const upload = multer({ storage }); 
 
 app.use(express.urlencoded());
-app.use(upload.single('photo')); // ✅ Handles image upload to Cloudinary
+app.use(upload.single('photo'));
 
 app.use(express.static(path.join(rootDir, 'public')));
 
-// ✅ Remove local "/uploads" serving because we are using Cloudinary now
+
 
 app.use(session({
-  secret: "KnowledgeGate AI with Complete Coding",
+  secret: "This project develop by Vikash308",
   resave: false,
   saveUninitialized: true,
   store
