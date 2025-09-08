@@ -15,4 +15,6 @@ storeRouter.post("/favourites", storeController.postAddToFavourite);
 storeRouter.post("/favourites/delete/:homeId", storeController.postRemoveFromFavourite);
 storeRouter.get("/describe/:id", storeController.describeHome)
 storeRouter.post("/homes/review/:id", storeController.review)
+storeRouter.post("/home/confirm/:id", storeController.confirm)
+storeRouter.post("/home/booking/:id", storeController.booking)
 module.exports = storeRouter;

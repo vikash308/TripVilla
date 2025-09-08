@@ -120,6 +120,9 @@ exports.review = async (req,res,next)=>{
   let {id} = req.params;
   let {name, rating, comment}= req.body;
 
+  let isLogin = req.session.user;
+  if(!isLogin) return res.redirect("/login")
+
   let userName = await req.session.user.firstName;
   let Name = userName +" "+req.session.user.lastName;
 
@@ -130,3 +133,36 @@ exports.review = async (req,res,next)=>{
   await home.save();
   res.redirect(`/describe/${id}`)
 }
+
+
+exports.confirm = async (req, res) => {
+  let homeId = req.params.id;
+    const {  dates} = req.body;
+
+    if(!req.session.user) return res.redirect("/login")
+
+    const home = await Home.findById(homeId);
+    if (!home) {
+        return res.status(404).send("Home not found");
+    }
+
+    // Calculate example price details
+    const nights = 2; // You can calculate based on dates
+    const discount = 871;
+    const taxes = 313.56;
+    const total = (home.price * nights - discount + taxes).toFixed(2);
+
+    res.render("store/confirm", {
+        home,
+        dates,
+        nights,
+        discount,
+        taxes,
+        total,
+        pageTitle: "Confirm and Pay",
+      currentPage: "home",
+      isLoggedIn: req.isLoggedIn,
+      user: req.session.user,
+    });
+};
+

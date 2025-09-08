@@ -1,0 +1,74 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+<%- include('../partials/nav') %>
+
+<div class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- LEFT SECTION -->
+    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-md">
+        <h1 class="text-2xl font-semibold mb-4">Confirm and pay</h1>
+
+        <p class="text-gray-500 mb-4">This is a rare find. <b> <%= home.houseName %></b> is usually booked.</p>
+
+        <!-- Trip Details -->
+        <div class="border rounded-lg p-4 mb-6">
+            <h2 class="text-lg font-semibold mb-4">Your trip</h2>
+            <div class="flex justify-between mb-2">
+                <p>Date</p>
+                <%if(!dates){%>
+                    <input type="date" name="datedate" id="">
+                    <%} else {%>
+                <p><%= dates %></p>
+                <%}%>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="border rounded-lg p-4 mb-6">
+            <h2 class="text-lg font-semibold mb-4">Enter number to book</h2>
+            <label class="block mb-2">Country/Region</label>
+            <select class="border rounded-lg w-full p-2 mb-4">
+                <option>India (+91)</option>
+            </select>
+            <input type="text" placeholder="Phone number" class="border rounded-lg w-full p-2 mb-4">
+            <input type="text" value="<%= user.email%> " class="border rounded-lg w-full p-2 mb-4">
+            <p class="text-sm text-gray-500 mb-4">We’ll call or text you to confirm your number. Standard message and data rates apply.</p>
+            <button class="bg-red-600 text-white w-full p-3 rounded-lg font-semibold">Continue</button>
+           
+        </div>
+    </div>
+
+    <!-- RIGHT SECTION -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+        <img src="<%= home.photo %>" alt="property" class="rounded-lg mb-4">
+        <h3 class="text-lg font-semibold"><%= home.title %></h3>
+        <div class="flex items-center text-sm text-gray-600 mb-4">
+            ⭐ <%= home.rating %> (<%= home.review.length %> review) <% if(home.superhost){ %> • Superhost <% } %>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="border-t pt-4">
+            <h2 class="text-lg font-semibold mb-4">Price details</h2>
+            <div class="flex justify-between mb-2">
+                <p><%= nights %> nights x ₹<%= home.price %></p>
+                <p>₹<%= home.price * nights %></p>
+            </div>
+            <div class="flex justify-between mb-2">
+                <p>Special offer</p>
+                <p>-₹<%= discount %></p>
+            </div>
+            <div class="flex justify-between mb-2">
+                <p>Taxes</p>
+                <p>₹<%= taxes %></p>
+            </div>
+            <div class="flex justify-between font-semibold text-lg mt-4">
+                <p>Total (INR)</p>
+                <p>₹<%= total %></p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center text-red-600 text-2xl font-bold">Currently working on Booking System and Payment Gateway </h2>
+
+</div>
